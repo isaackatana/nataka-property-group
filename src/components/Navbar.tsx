@@ -1,39 +1,74 @@
+import { useEffect, useState } from "react";
 import { Menu } from "lucide-react";
 
+const links = [
+  { label: "Home", href: "#" },
+  { label: "Properties", href: "#" },
+  { label: "Holiday Stays", href: "#" },
+  { label: "About", href: "#" },
+  { label: "Contact", href: "#" },
+];
+
 export default function Navbar() {
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 40);
+
+    window.addEventListener("scroll", onScroll);
+
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
   return (
-    <header className="fixed left-0 top-0 z-50 w-full">
-      <div className="mx-auto flex h-20 max-w-7xl items-center justify-between px-6">
+    <header
+      className={`fixed left-0 top-0 z-50 w-full transition-all duration-300 ${
+        scrolled
+          ? "bg-white shadow-lg py-2"
+          : "bg-transparent py-4"
+      }`}
+    >
+      <div className="mx-auto flex max-w-7xl items-center justify-between px-6">
         {/* Logo */}
         <div>
-          <h1 className="text-3xl font-bold tracking-wide text-white">
+          <h1
+            className={`text-2xl font-bold transition ${
+              scrolled ? "text-slate-900" : "text-white"
+            }`}
+          >
             NATAKA
           </h1>
 
-          <p className="text-xs uppercase tracking-[4px] text-amber-400">
+          <p className="text-xs uppercase tracking-[4px] text-amber-500">
             Property Group
           </p>
         </div>
 
-        {/* Desktop Navigation */}
-        <nav className="hidden items-center gap-10 text-sm font-medium text-white lg:flex">
-          <a href="#">Home</a>
-          <a href="#">Properties</a>
-          <a href="#">Holiday Stays</a>
-          <a href="#">About</a>
-          <a href="#">Contact</a>
+        {/* Desktop */}
+        <nav className="hidden gap-8 lg:flex">
+          {links.map((link) => (
+            <a
+              key={link.label}
+              href={link.href}
+              className={`font-medium transition hover:text-amber-500 ${
+                scrolled ? "text-slate-800" : "text-white"
+              }`}
+            >
+              {link.label}
+            </a>
+          ))}
         </nav>
 
-        {/* CTA */}
-        <div className="hidden lg:block">
-          <button className="rounded-full bg-amber-500 px-6 py-3 font-semibold text-white transition hover:bg-amber-600">
-            Get in Touch
-          </button>
-        </div>
+        <button className="hidden rounded-full bg-amber-500 px-5 py-3 font-semibold text-white transition hover:bg-amber-600 lg:block">
+          WhatsApp Us
+        </button>
 
-        {/* Mobile */}
-        <button className="text-white lg:hidden">
-          <Menu size={30} />
+        <button
+          className={`lg:hidden ${
+            scrolled ? "text-slate-900" : "text-white"
+          }`}
+        >
+          <Menu />
         </button>
       </div>
     </header>
