@@ -1,33 +1,36 @@
-import StayCard from "./StayCard";
+import { Link } from "react-router-dom";
 import { stays } from "../../data/stays";
+import StayCard from "../stay/StayCard";
+import SectionHeading from "../common/SectionHeading";
+import Container from "../common/Container";
 
 export default function FeaturedStays() {
+  const featuredStays = stays.slice(0, 3);
+
   return (
-    <section className="bg-white py-24">
-      <div className="mx-auto max-w-7xl px-6">
+    <section className="bg-white py-16 sm:py-20 lg:py-28">
+      <Container>
+        <SectionHeading
+          subtitle="Holiday Stays"
+          title="Experience Diani in Comfort"
+          description="Discover handpicked beachfront villas, luxury apartments, and holiday homes perfect for your next coastal getaway."
+        />
 
-        <div className="mb-16 text-center">
-          <p className="uppercase tracking-[5px] text-amber-500">
-            Holiday Stays
-          </p>
-
-          <h2 className="mt-4 text-5xl font-bold">
-            Escape to the Coast
-          </h2>
-
-          <p className="mx-auto mt-6 max-w-2xl text-slate-600">
-            Discover handpicked villas, apartments and beachfront homes for
-            your next holiday in Diani.
-          </p>
-        </div>
-
-        <div className="grid gap-8 md:grid-cols-2 xl:grid-cols-3">
-          {stays.map((stay) => (
+        <div className="grid grid-cols-1 gap-8 md:grid-cols-2 xl:grid-cols-3">
+          {featuredStays.map((stay) => (
             <StayCard key={stay.id} stay={stay} />
           ))}
         </div>
 
-      </div>
+        <div className="mt-12 flex justify-center">
+          <Link
+            to="/holiday-stays"
+            className="rounded-full bg-slate-900 px-8 py-4 font-semibold text-white transition-all duration-300 hover:bg-amber-500"
+          >
+            View All Holiday Stays
+          </Link>
+        </div>
+      </Container>
     </section>
   );
 }

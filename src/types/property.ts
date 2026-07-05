@@ -1,11 +1,19 @@
 export interface Property {
   id: number;
+  slug: string;
   title: string;
   location: string;
-  price: string;
+  price: number;
   beds: number;
   baths: number;
-  area: string;
-  status: string;
-  image: string;
+  area: number;
+  status: "For Sale" | "For Rent" | "Holiday Home";
+  type: string;
+  featured: boolean;
+  description: string;
+  amenities: string[];
+  thumbnail: string;
+  images: string[];
+  latitude: number;
+  longitude: number;
 }

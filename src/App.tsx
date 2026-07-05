@@ -1,29 +1,22 @@
-import Navbar from "./components/Navbar";
-import Hero from "./components/Hero";
-import SearchBar from "./components/SearchBar";
-import FeaturedProperties from "./components/FeaturedProperties";
-import WhyChoose from "./components/home/WhyChoose";
-import Services from "./components/home/Services";
-import FeaturedStays from "./components/home/FeaturedStays";
-import DiscoverDiani from "./components/home/DiscoverDiani";
-import Testimonials from "./components/home/Testimonials";
-import CTA from "./components/home/CTA";
-import Footer from "./components/layout/Footer";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+
+import Home from "./pages/Home";
+import Properties from "./pages/Properties";
+import PropertyDetails from "./pages/PropertyDetails";
 
 export default function App() {
   return (
-    <>
-      <Navbar />
-      <Hero />
-      <SearchBar />
-      <FeaturedProperties />
-      <WhyChoose/>
-      <Services/>
-      <FeaturedStays/>
-      <DiscoverDiani/>
-      <Testimonials/>
-      <CTA/>
-      <Footer/>
-    </>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Home />} />
+
+        <Route path="/properties" element={<Properties />} />
+
+        <Route
+          path="/properties/:id"
+          element={<PropertyDetails />}
+        />
+      </Routes>
+    </BrowserRouter>
   );
 }
