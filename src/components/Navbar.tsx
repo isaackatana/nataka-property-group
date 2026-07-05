@@ -1,75 +1,119 @@
 import { useEffect, useState } from "react";
-import { Menu } from "lucide-react";
+import { Menu, X } from "lucide-react";
 
-const links = [
-  { label: "Home", href: "#" },
-  { label: "Properties", href: "#" },
-  { label: "Holiday Stays", href: "#" },
-  { label: "About", href: "#" },
-  { label: "Contact", href: "#" },
+const navLinks = [
+  { name: "Home", href: "#" },
+  { name: "Properties", href: "#" },
+  { name: "Holiday Stays", href: "#" },
+  { name: "About", href: "#" },
+  { name: "Contact", href: "#" },
 ];
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
+  const [mobileOpen, setMobileOpen] = useState(false);
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 40);
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 40);
+    };
 
-    window.addEventListener("scroll", onScroll);
+    window.addEventListener("scroll", handleScroll);
 
-    return () => window.removeEventListener("scroll", onScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  // Prevent scrolling when mobile menu is open
+  useEffect(() => {
+    document.body.style.overflow = mobileOpen ? "hidden" : "auto";
+
+    return () => {
+      document.body.style.overflow = "auto";
+    };
+  }, [mobileOpen]);
 
   return (
     <header
-      className={`fixed left-0 top-0 z-50 w-full transition-all duration-300 ${
+      className={`fixed inset-x-0 top-0 z-50 transition-all duration-300 ${
         scrolled
-          ? "bg-white shadow-lg py-2"
-          : "bg-transparent py-4"
+          ? "bg-white shadow-lg py-3"
+          : "bg-transparent py-5"
       }`}
     >
       <div className="mx-auto flex max-w-7xl items-center justify-between px-6">
         {/* Logo */}
-        <div>
+        <a href="#" className="flex flex-col">
           <h1
-            className={`text-2xl font-bold transition ${
+            className={`text-2xl font-bold transition-colors ${
               scrolled ? "text-slate-900" : "text-white"
             }`}
           >
             NATAKA
           </h1>
 
-          <p className="text-xs uppercase tracking-[4px] text-amber-500">
+          <span className="text-xs uppercase tracking-[5px] text-amber-500">
             Property Group
-          </p>
-        </div>
+          </span>
+        </a>
 
-        {/* Desktop */}
-        <nav className="hidden gap-8 lg:flex">
-          {links.map((link) => (
+        {/* Desktop Navigation */}
+        <nav className="hidden items-center gap-8 lg:flex">
+          {navLinks.map((link) => (
             <a
-              key={link.label}
+              key={link.name}
               href={link.href}
-              className={`font-medium transition hover:text-amber-500 ${
-                scrolled ? "text-slate-800" : "text-white"
+              className={`font-medium transition-colors hover:text-amber-500 ${
+                scrolled ? "text-slate-700" : "text-white"
               }`}
             >
-              {link.label}
+              {link.name}
             </a>
           ))}
+
+          <a
+            href="https://wa.me/254700000000"
+            className="rounded-full bg-amber-500 px-6 py-3 font-semibold text-white transition hover:bg-amber-600"
+          >
+            WhatsApp
+          </a>
         </nav>
 
-        <button className="hidden rounded-full bg-amber-500 px-5 py-3 font-semibold text-white transition hover:bg-amber-600 lg:block">
-          WhatsApp Us
-        </button>
-
+        {/* Mobile Button */}
         <button
+          onClick={() => setMobileOpen(!mobileOpen)}
           className={`lg:hidden ${
             scrolled ? "text-slate-900" : "text-white"
           }`}
         >
-          <Menu />
+          {mobileOpen ? <X size={30} /> : <Menu size={30} />}
         </button>
+      </div>
+
+      {/* Mobile Menu */}
+      <div
+        className={`overflow-hidden bg-white transition-all duration-300 lg:hidden ${
+          mobileOpen ? "max-h-screen shadow-xl" : "max-h-0"
+        }`}
+      >
+        <nav className="flex flex-col px-6 py-6">
+          {navLinks.map((link) => (
+            <a
+              key={link.name}
+              href={link.href}
+              onClick={() => setMobileOpen(false)}
+              className="border-b border-slate-100 py-4 text-lg text-slate-700 transition hover:text-amber-500"
+            >
+              {link.name}
+            </a>
+          ))}
+
+          <a
+            href="https://wa.me/254700000000"
+            className="mt-6 rounded-full bg-amber-500 py-4 text-center font-semibold text-white transition hover:bg-amber-600"
+          >
+            Chat on WhatsApp
+          </a>
+        </nav>
       </div>
     </header>
   );
